@@ -66,6 +66,17 @@ st.markdown(
             color: #f8fafc !important;
         }
 
+        .stSidebar .stSelectbox > div > div,
+        .stSidebar .stTextInput > div > div,
+        .stSidebar .stSelectbox [data-baseweb="select"] {
+            color: #0f172a !important;
+            background: #f8fafc !important;
+        }
+
+        .stSidebar [data-testid="stBaseButton-secondary"] {
+            color: #0f172a !important;
+        }
+
         .stSidebar .stSelectbox label,
         .stSidebar .stTextInput label,
         .stSidebar .stRadio label,
@@ -78,6 +89,72 @@ st.markdown(
             color: #f8fafc !important;
         }
 
+        .stSelectbox label,
+        .stFileUploader label,
+        .stTextInput label,
+        .stTextArea label,
+        .stSlider label,
+        .stRadio label,
+        [data-testid="stBaseButton-secondary"],
+        .stForm label,
+        .stMarkdown h1,
+        .stMarkdown h2,
+        .stMarkdown h3,
+        .stMarkdown p {
+            color: #e2e8f0 !important;
+        }
+
+        .stSelectbox > div > div > div,
+        .stSelectbox div[role="combobox"],
+        .stSelectbox [data-baseweb="select"] {
+            color: #0f172a !important;
+            background: #f8fafc !important;
+        }
+
+        .stFileUploader .uploadedFileName,
+        .stFileUploader .fileName,
+        .stFileUploader div[data-testid="stFileUploaderDropzone"] > div,
+        .stFileUploader div[data-testid="stFileUploaderDropzone"] span,
+        .stFileUploader div[data-testid="stFileUploaderDropzone"] p,
+        .stFileUploader div[data-testid="stFileUploaderDropzone"] strong,
+        .stFileUploader label {
+            color: #e2e8f0 !important;
+        }
+
+        .stSidebar .stSelectbox > div > div > div,
+        .stSidebar .stTextInput > div > div > input,
+        .stSidebar .stTextArea > div > div > textarea {
+            color: #0f172a !important;
+        }
+
+        .stSidebar .stTextInput > div > div > input::placeholder,
+        .stSidebar .stTextArea > div > div > textarea::placeholder {
+            color: rgba(15, 23, 42, 0.75) !important;
+        }
+
+        .stSelectbox > div > div > div,
+        .stSelectbox [data-baseweb="select"],
+        .stSelectbox div[role="combobox"],
+        .stTextInput > div > div > input,
+        .stTextArea > div > div > textarea {
+            color: #0f172a !important;
+        }
+
+        .stFileUploader button,
+        .stFileUploader [data-testid="baseButton-secondary"],
+        .stFileUploader [data-testid="stBaseButton-secondary"] {
+            background: #ffffff !important;
+            color: #0f172a !important;
+            border: 1px solid rgba(148, 163, 184, 0.35) !important;
+        }
+
+        .stChatInput textarea::placeholder,
+        .stChatInput textarea::-webkit-input-placeholder,
+        .stChatInput textarea::-moz-placeholder,
+        .stChatInput textarea:-ms-input-placeholder {
+            color: rgba(226, 232, 240, 0.8) !important;
+        }
+
         .stSidebar .stButton > button {
             background: rgba(30, 41, 59, 0.88) !important;
             border: 1px solid rgba(148, 163, 184, 0.2) !important;
@@ -87,6 +164,46 @@ st.markdown(
         .stSidebar .stButton > button:hover {
             background: rgba(79, 70, 229, 0.35) !important;
             border-color: rgba(165, 180, 252, 0.45) !important;
+        }
+
+        .stSelectbox > div > div > div,
+        .stSelectbox [data-baseweb="select"],
+        .stSelectbox div[role="combobox"],
+        .stTextInput > div > div > input,
+        .stTextArea > div > div > textarea,
+        .stSelectbox input,
+        .stTextInput input,
+        .stTextArea textarea {
+            background: #f8fafc !important;
+            color: #0f172a !important;
+            border-color: rgba(148, 163, 184, 0.26) !important;
+        }
+
+        .stSelectbox > div > div > div > span,
+        .stSelectbox > div > div > div > div,
+        .stTextInput > div > div > input::placeholder,
+        .stTextArea > div > div > textarea::placeholder,
+        .stChatInput textarea::placeholder,
+        .stChatInput textarea::-webkit-input-placeholder,
+        .stChatInput textarea::-moz-placeholder {
+            color: #0f172a !important;
+        }
+
+        [data-testid="stFileUploaderDropzone"],
+        [data-testid="stFileUploaderDropzone"] > div,
+        [data-testid="stFileUploaderDropzone"] p,
+        [data-testid="stFileUploaderDropzone"] span,
+        [data-testid="stFileUploaderDropzone"] strong,
+        [data-testid="stFileUploaderDropzone"] label {
+            color: #e2e8f0 !important;
+        }
+
+        [data-testid="stFileUploaderDropzone"] button,
+        [data-testid="stFileUploaderDropzone"] [data-testid="baseButton-secondary"],
+        [data-testid="stFileUploaderDropzone"] [data-testid="stBaseButton-secondary"] {
+            background: #ffffff !important;
+            color: #0f172a !important;
+            border: 1px solid rgba(148, 163, 184, 0.4) !important;
         }
 
         .brand-badge {
@@ -328,6 +445,14 @@ st.markdown(
             box-shadow: 0 0 0 1px rgba(96, 165, 250, 0.08);
         }
 
+        .stFileUploader .uploadFileName,
+        .stFileUploader .fileInfo,
+        .stFileUploader [data-testid="stFileUploaderDropzone"] div,
+        .stFileUploader [data-testid="stFileUploaderDropzone"] p,
+        .stFileUploader [data-testid="stFileUploaderDropzone"] span {
+            color: #e2e8f0 !important;
+        }
+
         .stTextInput > div > div > input,
         .stTextArea > div > div > textarea {
             background: rgba(15, 23, 42, 0.92) !important;
@@ -339,8 +464,9 @@ st.markdown(
         }
 
         .stTextInput > div > div > input::placeholder,
-        .stTextArea > div > div > textarea::placeholder {
-            color: rgba(226, 232, 240, 0.58) !important;
+        .stTextArea > div > div > textarea::placeholder,
+        .stChatInput textarea::placeholder {
+            color: rgba(226, 232, 240, 0.72) !important;
         }
 
         .stChatInput {
@@ -359,6 +485,17 @@ st.markdown(
             color: #f8fafc !important;
             border-radius: 16px;
             padding: 0.9rem 1rem !important;
+        }
+
+        .stChatInput textarea::placeholder,
+        .stChatInput textarea::-webkit-input-placeholder,
+        .stChatInput textarea::-moz-placeholder,
+        .stChatInput textarea:-ms-input-placeholder {
+            color: rgba(226, 232, 240, 0.82) !important;
+        }
+
+        .stChatInput > div > div > textarea {
+            color: #f8fafc !important;
         }
 
         .stChatInput button {
