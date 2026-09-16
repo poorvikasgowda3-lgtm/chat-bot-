@@ -14,26 +14,25 @@ st.set_page_config(
 st.markdown(
     """
     <style>
+        html, body, [data-testid="stAppViewContainer"], [data-testid="stApp"] {
+            background: #0b1020;
+            color: #e2e8f0;
+        }
+
         .main .block-container {
             padding-top: 2rem;
             padding-bottom: 3rem;
             max-width: 1180px;
         }
 
-        .app-shell {
-            background: linear-gradient(180deg, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 0.96));
-            border-radius: 18px;
-            padding: 1.25rem;
-            border: 1px solid rgba(148, 163, 184, 0.18);
-        }
-
         .header-card {
-            background: linear-gradient(135deg, #4f46e5, #7c3aed, #a855f7);
+            background: linear-gradient(135deg, #1f2937 0%, #312e81 35%, #4c1d95 100%);
             color: white;
             border-radius: 20px;
             padding: 1.5rem 2rem;
             margin-bottom: 1.5rem;
-            box-shadow: 0 18px 40px rgba(79, 70, 229, 0.35);
+            box-shadow: 0 18px 40px rgba(15, 23, 42, 0.7);
+            border: 1px solid rgba(148, 163, 184, 0.18);
         }
 
         .header-card h1 {
@@ -45,24 +44,26 @@ st.markdown(
 
         .header-card p {
             margin: 0.5rem 0 0;
-            color: rgba(255,255,255,0.9);
+            color: rgba(255,255,255,0.85);
             font-size: 1.02rem;
         }
 
         .info-card {
-            background: rgba(15, 23, 42, 0.72);
-            border: 1px solid rgba(148, 163, 184, 0.18);
+            background: rgba(15, 23, 42, 0.92);
+            border: 1px solid rgba(148, 163, 184, 0.2);
             border-radius: 16px;
             padding: 1rem 1.1rem;
             height: 100%;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
         }
 
         .metric-title {
-            font-size: 0.8rem;
+            font-size: 0.72rem;
             text-transform: uppercase;
             letter-spacing: 0.08em;
-            opacity: 0.7;
+            opacity: 0.72;
             margin-bottom: 0.45rem;
+            color: #cbd5e1;
         }
 
         .metric-value {
@@ -80,19 +81,19 @@ st.markdown(
         }
 
         .status-active {
-            background: rgba(34, 197, 94, 0.15);
+            background: rgba(34, 197, 94, 0.12);
             color: #bbf7d0;
-            border: 1px solid rgba(34, 197, 94, 0.3);
+            border: 1px solid rgba(34, 197, 94, 0.35);
         }
 
         .status-inactive {
             background: rgba(239, 68, 68, 0.12);
             color: #fecaca;
-            border: 1px solid rgba(239, 68, 68, 0.3);
+            border: 1px solid rgba(239, 68, 68, 0.35);
         }
 
         .citation-card {
-            background: rgba(30, 41, 59, 0.9);
+            background: rgba(15, 23, 42, 0.95);
             border-left: 4px solid #8b5cf6;
             border-radius: 12px;
             padding: 0.9rem 1rem;
@@ -100,15 +101,38 @@ st.markdown(
             margin-bottom: 0.6rem;
             color: #e2e8f0;
             line-height: 1.5;
+            border: 1px solid rgba(148, 163, 184, 0.16);
         }
 
         .stChatMessage {
             border-radius: 16px;
+            background: rgba(15, 23, 42, 0.75);
+            border: 1px solid rgba(148, 163, 184, 0.15);
         }
 
         .stButton > button {
             border-radius: 12px;
             font-weight: 700;
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: white;
+            border: none;
+        }
+
+        [data-testid="stFileUploaderDropzone"] {
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px dashed rgba(148, 163, 184, 0.35);
+            border-radius: 14px;
+        }
+
+        .stTextInput > div > div > input,
+        .stTextArea > div > div > textarea {
+            background: rgba(15, 23, 42, 0.8);
+            color: #f8fafc;
+            border: 1px solid rgba(148, 163, 184, 0.2);
+        }
+
+        .sidebar-content {
+            background: #020817;
         }
     </style>
     """,
