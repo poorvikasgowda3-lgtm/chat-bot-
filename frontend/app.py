@@ -1,5 +1,7 @@
 import json
 import os
+import uuid
+from datetime import datetime
 
 import requests
 import streamlit as st
@@ -47,12 +49,44 @@ st.markdown(
         }
 
         .sidebar-floating {
-            background: rgba(15, 23, 42, 0.9);
-            border: 1px solid rgba(148, 163, 184, 0.14);
-            border-radius: 24px;
+            background: linear-gradient(180deg, rgba(15, 23, 42, 0.96), rgba(15, 23, 42, 0.82));
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            border-radius: 26px;
             padding: 1rem 0.9rem;
             backdrop-filter: blur(12px);
-            box-shadow: 0 20px 40px rgba(15, 23, 42, 0.45);
+            box-shadow: 0 18px 36px rgba(15, 23, 42, 0.42);
+        }
+
+        [data-testid="stSidebar"] {
+            background: linear-gradient(180deg, #020817 0%, #0b1120 100%);
+            color: #f8fafc;
+        }
+
+        .stSidebar * {
+            color: #f8fafc !important;
+        }
+
+        .stSidebar .stSelectbox label,
+        .stSidebar .stTextInput label,
+        .stSidebar .stRadio label,
+        .stSidebar .stMarkdown p,
+        .stSidebar .stCaption,
+        .stSidebar .stSubheader,
+        .stSidebar .stButton p,
+        .stSidebar button,
+        .stSidebar .stExpander {
+            color: #f8fafc !important;
+        }
+
+        .stSidebar .stButton > button {
+            background: rgba(30, 41, 59, 0.88) !important;
+            border: 1px solid rgba(148, 163, 184, 0.2) !important;
+            color: #f8fafc !important;
+        }
+
+        .stSidebar .stButton > button:hover {
+            background: rgba(79, 70, 229, 0.35) !important;
+            border-color: rgba(165, 180, 252, 0.45) !important;
         }
 
         .brand-badge {
@@ -82,11 +116,11 @@ st.markdown(
         }
 
         .chat-canvas {
-            background: linear-gradient(180deg, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.72));
+            background: linear-gradient(180deg, rgba(15, 23, 42, 0.94), rgba(15, 23, 42, 0.74));
             border: 1px solid rgba(148, 163, 184, 0.14);
-            border-radius: 26px;
-            padding: 1rem 1rem 0.75rem;
-            box-shadow: 0 20px 45px rgba(15, 23, 42, 0.42);
+            border-radius: 30px;
+            padding: 1.2rem 1.1rem 0.75rem;
+            box-shadow: 0 22px 50px rgba(15, 23, 42, 0.42), inset 0 1px 0 rgba(255,255,255,0.04);
             max-width: 980px;
             margin: 0 auto;
         }
@@ -146,13 +180,13 @@ st.markdown(
         }
 
         .tool-panel {
-            background: rgba(15, 23, 42, 0.82);
+            background: rgba(15, 23, 42, 0.8);
             border: 1px solid rgba(148, 163, 184, 0.18);
-            border-radius: 20px;
+            border-radius: 22px;
             padding: 1rem 1.1rem;
             margin-top: 0.5rem;
             margin-bottom: 1rem;
-            box-shadow: 0 10px 25px rgba(15, 23, 42, 0.25);
+            box-shadow: 0 14px 28px rgba(15, 23, 42, 0.28);
         }
 
         .upload-box {
@@ -221,7 +255,7 @@ st.markdown(
             display: flex;
             align-items: flex-start;
             gap: 0.65rem;
-            margin: 0.8rem 0;
+            margin: 0.9rem 0;
         }
 
         .avatar {
@@ -254,7 +288,7 @@ st.markdown(
             padding: 0.9rem 1rem;
             color: #f8fafc;
             line-height: 1.6;
-            box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.02), 0 8px 22px rgba(2, 6, 23, 0.2);
         }
 
         .assistant-message {
@@ -340,8 +374,48 @@ st.markdown(
             border-right: 1px solid rgba(148, 163, 184, 0.12);
         }
 
-        [data-testid="stSidebar"] {
-            background: #020817;
+        .session-view {
+            margin-top: 0.5rem;
+        }
+
+        .session-item {
+            display: block;
+            width: 100%;
+            text-align: left;
+            border-radius: 12px;
+            padding: 0.5rem 0.65rem;
+            background: rgba(15, 23, 42, 0.64);
+            border: 1px solid rgba(148, 163, 184, 0.12);
+            color: #f8fafc;
+            margin-bottom: 0.35rem;
+        }
+
+        .session-item.active {
+            background: rgba(99, 102, 241, 0.17);
+            border-color: rgba(129, 140, 248, 0.4);
+            box-shadow: inset 0 0 0 1px rgba(165, 180, 252, 0.12);
+        }
+
+        .stExpander {
+            border: 1px solid rgba(148, 163, 184, 0.16);
+            border-radius: 14px;
+            background: linear-gradient(180deg, rgba(15, 23, 42, 0.66), rgba(15, 23, 42, 0.46));
+        }
+
+        .stExpander > div > div:first-child {
+            color: #f8fafc !important;
+            font-weight: 600;
+        }
+
+        .stRadio > div {
+            gap: 0.5rem;
+        }
+
+        .stRadio > div label {
+            background: rgba(15, 23, 42, 0.56);
+            border: 1px solid rgba(148, 163, 184, 0.12);
+            border-radius: 10px;
+            padding: 0.35rem 0.7rem;
         }
     </style>
     """,
@@ -349,13 +423,188 @@ st.markdown(
 )
 
 API_BASE_URL = os.getenv("BACKEND_API_URL", "http://localhost:8000")
+APP_STATE_PATH = os.path.join(os.path.dirname(__file__), "chat_history.json")
 
-if "chat_history" not in st.session_state:
+
+def get_now_iso():
+    return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+
+def get_document_set_key(files):
+    normalized = [str(item).strip() for item in (files or [])]
+    return "|".join(sorted(normalized))
+
+
+def build_default_chat_session(files=None, title=None):
+    safe_files = [str(item) for item in (files or [])]
+    if title is None:
+        if safe_files:
+            label = ", ".join(safe_files[:2])
+            if len(safe_files) > 2:
+                label = f"{label}, +{len(safe_files) - 2} more"
+            title = f"Docs: {label}"
+        else:
+            title = "New chat"
+
+    return {
+        "id": str(uuid.uuid4()),
+        "title": title,
+        "created_at": get_now_iso(),
+        "updated_at": get_now_iso(),
+        "messages": [],
+        "document_set_key": get_document_set_key(safe_files),
+    }
+
+
+def sanitize_session_title(prompt: str):
+    text = " ".join(prompt.strip().split())
+    if len(text) <= 28:
+        return text or "New chat"
+    return text[:28].rstrip() + "..."
+
+
+def format_chat_export(messages):
+    lines = []
+    for entry in messages:
+        role = "You" if entry.get("role") == "user" else "Assistant"
+        lines.append(f"[{role}] {entry.get('content', '').strip()}")
+        if "sources" in entry and entry.get("sources"):
+            lines.append("Sources:")
+            for source in entry["sources"]:
+                lines.append(
+                    f"- {source.get('pdf_filename')} | Page {source.get('page_number')} | {source.get('text_snippet', '').strip()}"
+                )
+        lines.append("")
+    return "\n".join(lines).strip() + "\n"
+
+
+def load_persisted_state():
+    default_state = {
+        "chat_sessions": [build_default_chat_session()],
+        "current_session_id": None,
+        "uploaded_files": [],
+        "pdf_chunks_count": 0,
+        "selected_model": "gpt-4o-mini",
+    }
+
+    if not os.path.exists(APP_STATE_PATH):
+        return default_state
+
+    try:
+        with open(APP_STATE_PATH, "r", encoding="utf-8") as f:
+            saved = json.load(f)
+        if not isinstance(saved, dict):
+            return default_state
+
+        default_state.update(saved)
+        if "chat_sessions" not in saved or not saved.get("chat_sessions"):
+            legacy_history = saved.get("chat_history", [])
+            if legacy_history:
+                default_state["chat_sessions"] = [{
+                    "id": str(uuid.uuid4()),
+                    "title": "Imported chat",
+                    "created_at": get_now_iso(),
+                    "updated_at": get_now_iso(),
+                    "messages": legacy_history,
+                }]
+            else:
+                default_state["chat_sessions"] = [build_default_chat_session()]
+        if not default_state.get("current_session_id"):
+            default_state["current_session_id"] = default_state["chat_sessions"][0]["id"]
+        return default_state
+    except Exception:
+        return default_state
+
+
+def save_persisted_state():
+    session_list = st.session_state.get("chat_sessions", [])
+    current_id = st.session_state.get("current_session_id")
+    if not session_list:
+        session_list = [build_default_chat_session(st.session_state.get("uploaded_files", []))]
+        st.session_state.chat_sessions = session_list
+        current_id = session_list[0]["id"]
+        st.session_state.current_session_id = current_id
+
+    for session in session_list:
+        if "document_set_key" not in session:
+            files = session.get("uploaded_files", [])
+            session["document_set_key"] = get_document_set_key(files)
+
+    payload = {
+        "chat_sessions": session_list,
+        "current_session_id": current_id,
+        "uploaded_files": st.session_state.get("uploaded_files", []),
+        "pdf_chunks_count": st.session_state.get("pdf_chunks_count", 0),
+        "selected_model": st.session_state.get("selected_model", "gpt-4o-mini"),
+    }
+
+    try:
+        with open(APP_STATE_PATH, "w", encoding="utf-8") as f:
+            json.dump(payload, f, indent=2)
+    except Exception:
+        pass
+
+
+def get_active_session():
+    sessions = st.session_state.get("chat_sessions", [])
+    current_id = st.session_state.get("current_session_id")
+
+    if not sessions:
+        new_session = build_default_chat_session(st.session_state.get("uploaded_files", []))
+        st.session_state.chat_sessions = [new_session]
+        st.session_state.current_session_id = new_session["id"]
+        return new_session
+
+    active = next((s for s in sessions if s.get("id") == current_id), sessions[0])
+    st.session_state.current_session_id = active["id"]
+    return active
+
+
+def sorted_sessions(sessions):
+    return sorted(sessions, key=lambda s: s.get("updated_at", ""), reverse=True)
+
+
+def ensure_session_for_uploaded_files():
+    files = st.session_state.get("uploaded_files", [])
+    current_key = get_document_set_key(files)
+    sessions = st.session_state.get("chat_sessions", [])
+
+    if not files:
+        return
+
+    for session in sessions:
+        if session.get("document_set_key") == current_key:
+            st.session_state.current_session_id = session["id"]
+            st.session_state.chat_history = session.get("messages", [])
+            return
+
+    new_session = build_default_chat_session(files)
+    sessions.append(new_session)
+    st.session_state.chat_sessions = sessions
+    st.session_state.current_session_id = new_session["id"]
     st.session_state.chat_history = []
+    save_persisted_state()
+
+
+persisted_state = load_persisted_state()
+
+if "chat_sessions" not in st.session_state:
+    st.session_state.chat_sessions = persisted_state.get("chat_sessions", [build_default_chat_session()])
+if "current_session_id" not in st.session_state:
+    st.session_state.current_session_id = persisted_state.get("current_session_id") or st.session_state.chat_sessions[0]["id"]
 if "uploaded_files" not in st.session_state:
-    st.session_state.uploaded_files = []
+    st.session_state.uploaded_files = persisted_state.get("uploaded_files", [])
 if "pdf_chunks_count" not in st.session_state:
-    st.session_state.pdf_chunks_count = 0
+    st.session_state.pdf_chunks_count = persisted_state.get("pdf_chunks_count", 0)
+if "selected_model" not in st.session_state:
+    st.session_state.selected_model = persisted_state.get("selected_model", "gpt-4o-mini")
+
+if not st.session_state.chat_sessions:
+    st.session_state.chat_sessions = [build_default_chat_session(st.session_state.get("uploaded_files", []))]
+    st.session_state.current_session_id = st.session_state.chat_sessions[0]["id"]
+
+ensure_session_for_uploaded_files()
+st.session_state.chat_history = get_active_session().get("messages", [])
 
 
 def check_backend_health():
@@ -435,21 +684,74 @@ with st.sidebar:
     st.image("https://img.icons8.com/isometric/100/pdf.png", width=72)
     st.title("Workspace")
 
-    if "selected_model" not in st.session_state:
-        st.session_state.selected_model = "gpt-4o-mini"
-
     st.session_state.selected_model = st.selectbox(
         "Model",
         ["gpt-4o-mini", "gpt-3.5-turbo", "Local RAG"],
         index=["gpt-4o-mini", "gpt-3.5-turbo", "Local RAG"].index(st.session_state.selected_model),
         help="Choose the model used for answer generation.",
     )
+    save_persisted_state()
 
     st.markdown('<div class="new-chat-button">', unsafe_allow_html=True)
     if st.button("＋ New chat", use_container_width=True):
+        new_session = build_default_chat_session(st.session_state.get("uploaded_files", []))
+        st.session_state.chat_sessions.append(new_session)
+        st.session_state.current_session_id = new_session["id"]
         st.session_state.chat_history = []
+        save_persisted_state()
         st.rerun()
     st.markdown('</div>', unsafe_allow_html=True)
+
+    st.divider()
+    st.subheader("Saved chats")
+    current_doc_key = get_document_set_key(st.session_state.get("uploaded_files", []))
+    chat_view = st.radio("View", ["All chats", "Current document set"], horizontal=True, index=0)
+
+    displayed_sessions = sorted_sessions(st.session_state.get("chat_sessions", []))
+    if chat_view == "Current document set":
+        displayed_sessions = [
+            session for session in displayed_sessions
+            if session.get("document_set_key") == current_doc_key
+        ]
+
+    if displayed_sessions:
+        with st.expander(f"{chat_view} ({len(displayed_sessions)})", expanded=True):
+            for session in displayed_sessions:
+                is_active = session["id"] == st.session_state.get("current_session_id")
+                summary = session.get("title", "New chat")
+                stamp = session.get("updated_at", "")
+                btn_label = f"{summary} • {stamp}"
+                col_switch, col_delete = st.columns([5, 1])
+                with col_switch:
+                    if st.button(btn_label, key=f"session_{session['id']}", use_container_width=True, type="secondary" if not is_active else "primary"):
+                        st.session_state.current_session_id = session["id"]
+                        st.session_state.chat_history = session.get("messages", [])
+                        save_persisted_state()
+                        st.rerun()
+                with col_delete:
+                    if st.button("✕", key=f"delete_{session['id']}", use_container_width=True):
+                        if len(st.session_state.chat_sessions) > 1:
+                            st.session_state.chat_sessions = [s for s in st.session_state.chat_sessions if s["id"] != session["id"]]
+                            if st.session_state.current_session_id == session["id"]:
+                                remaining = sorted_sessions(st.session_state.chat_sessions)
+                                if remaining:
+                                    st.session_state.current_session_id = remaining[0]["id"]
+                                    st.session_state.chat_history = remaining[0].get("messages", [])
+                            save_persisted_state()
+                            st.rerun()
+    else:
+        st.caption("No chats in this view yet.")
+
+    active_session = get_active_session()
+    st.text_input(
+        "Rename saved topic",
+        value=active_session.get("title", "New chat"),
+        key="manual_title_input",
+    )
+    if st.session_state.get("manual_title_input") != active_session.get("title", "New chat"):
+        active_session["title"] = st.session_state.manual_title_input.strip() or "New chat"
+        active_session["updated_at"] = get_now_iso()
+        save_persisted_state()
 
     st.divider()
     health_data = check_backend_health()
@@ -484,9 +786,12 @@ with st.sidebar:
 
     st.divider()
     if st.button("🗑️ Clear Chat"):
+        active_session = get_active_session()
+        active_session["messages"] = []
+        active_session["title"] = "New chat"
+        active_session["updated_at"] = get_now_iso()
         st.session_state.chat_history = []
-        st.session_state.uploaded_files = []
-        st.session_state.pdf_chunks_count = 0
+        save_persisted_state()
         st.rerun()
     st.markdown('</div>', unsafe_allow_html=True)
 
@@ -567,6 +872,8 @@ if uploaded_files:
 if process_btn and selected_files:
     with st.spinner("Uploading and indexing the selected PDFs into Qdrant..."):
         result = upload_multiple_pdfs(selected_files)
+        ensure_session_for_uploaded_files()
+        save_persisted_state()
         if result["uploaded"]:
             st.success(
                 f"✅ Successfully processed: {', '.join(result['uploaded'])}. Total chunks indexed: {result['total_chunks']}"
@@ -579,13 +886,15 @@ st.markdown('</div>', unsafe_allow_html=True)
 st.divider()
 
 st.markdown('<div class="chat-canvas">', unsafe_allow_html=True)
+active_session = get_active_session()
+chat_title = active_session.get("title", "New chat")
 if st.session_state.uploaded_files:
     active_context = ", ".join(st.session_state.uploaded_files)
     st.markdown(
         f"""
         <div class="chat-header">
             <div class="chat-header-icon">💬</div>
-            <div class="chat-header-text">Conversation</div>
+            <div class="chat-header-text">{chat_title}</div>
             <span class="conversation-pill">{active_context}</span>
         </div>
         """,
@@ -593,15 +902,25 @@ if st.session_state.uploaded_files:
     )
 else:
     st.markdown(
-        """
+        f"""
         <div class="chat-header">
             <div class="chat-header-icon">💬</div>
-            <div class="chat-header-text">Conversation</div>
+            <div class="chat-header-text">{chat_title}</div>
         </div>
         """,
         unsafe_allow_html=True,
     )
     st.warning("⚠️ Upload and process one or more PDF files to activate the chat panel.")
+
+chat_export = format_chat_export(st.session_state.chat_history)
+if chat_export:
+    st.download_button(
+        label="⬇️ Download chat",
+        data=chat_export,
+        file_name=f"{chat_title.lower().replace(' ', '_') or 'chat'}.txt",
+        mime="text/plain",
+        use_container_width=True,
+    )
 
 for message in st.session_state.chat_history:
     role = message["role"]
@@ -625,7 +944,17 @@ if prompt := st.chat_input(
     "Ask a question about the uploaded PDF(s)...",
     disabled=not st.session_state.uploaded_files,
 ):
-    st.session_state.chat_history.append({"role": "user", "content": prompt})
+    active_session = get_active_session()
+    if active_session.get("document_set_key") != get_document_set_key(st.session_state.get("uploaded_files", [])):
+        ensure_session_for_uploaded_files()
+        active_session = get_active_session()
+
+    active_session["messages"].append({"role": "user", "content": prompt})
+    active_session["updated_at"] = get_now_iso()
+    if active_session.get("title") == "New chat":
+        active_session["title"] = sanitize_session_title(prompt)
+    st.session_state.chat_history = active_session["messages"]
+    save_persisted_state()
 
     with st.container():
         st.markdown(
@@ -643,7 +972,10 @@ if prompt := st.chat_input(
         if response_data:
             answer = response_data["answer"]
             sources = response_data.get("sources", [])
-            st.session_state.chat_history.append({"role": "assistant", "content": answer, "sources": sources})
+            active_session["messages"].append({"role": "assistant", "content": answer, "sources": sources})
+            active_session["updated_at"] = get_now_iso()
+            st.session_state.chat_history = active_session["messages"]
+            save_persisted_state()
             st.markdown(
                 f"""
                 <div class="message-row">
@@ -656,7 +988,10 @@ if prompt := st.chat_input(
             render_citations(sources)
         else:
             error_text = "Sorry, I could not reach the backend QA service."
-            st.session_state.chat_history.append({"role": "assistant", "content": error_text})
+            active_session["messages"].append({"role": "assistant", "content": error_text})
+            active_session["updated_at"] = get_now_iso()
+            st.session_state.chat_history = active_session["messages"]
+            save_persisted_state()
             st.markdown(
                 f"""
                 <div class="message-row">
