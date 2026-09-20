@@ -9,19 +9,22 @@ class EmbeddingService:
         self.model_name = settings.EMBEDDING_MODEL
         self.openai_key = settings.OPENAI_API_KEY
         self.st_model = None
+        self.vector_dim = 384
 
-        # Check if using local sentence-transformers
-        if not self.openai_key or "sentence-transformers" in self.model_name:
-            try:
-                from sentence_transformers import SentenceTransformer
-                logger.info(f"Loading local SentenceTransformer model: {self.model_name}")
-                self.st_model = SentenceTransformer(self.model_name)
-                self.vector_dim = self.st_model.get_sentence_embedding_dimension()
-            except Exception as e:
-                logger.warning(f"Could not load SentenceTransformer ({e}). Falling back to dummy/OpenAI mode.")
-                self.vector_dim = 384
-        else:
-            self.vector_dim = 1536  # standard for text-embedding-3-small or ada-002
+        if self.openai_key and "sentence-transformers" not in self.model_name:
+            self.vector_dim = 1536
+
+    def _load_local_model(self):
+        if self.st_model is not None:
+            return
+
+        try:
+            from sentence_transformers import SentenceTransformer
+            logger.info(f"Loading local SentenceTransformer model: {self.model_name}")
+            self.st_model = SentenceTransformer(self.model_name)
+            self.vector_dim = self.st_model.get_sentence_embedding_dimension()
+        except Exception as e:
+            logger.warning(f"Could not load SentenceTransformer ({e}). Falling back to dummy/OpenAI mode.")
 
     def get_dimension(self) -> int:
         return self.vector_dim
@@ -29,6 +32,13 @@ class EmbeddingService:
     def generate_embeddings(self, texts: List[str]) -> List[List[float]]:
         if not texts:
             return []
+
+        # Load the local model only when an upload or question needs vectors.
+        if not self.openai_key or "sentence-transformers" in self.model_name:
+            try:
+                self._load_local_model()
+            except Exception as e:
+                logger.warning(f"Could not initialize local embeddings: {e}")
 
         if self.st_model:
             embeddings = self.st_model.encode(texts, convert_to_numpy=True)
