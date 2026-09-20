@@ -108,6 +108,25 @@ Access points:
 - **FastAPI API**: `http://localhost:8000`
 - **Qdrant Dashboard**: `http://localhost:6333/dashboard`
 
+### Access from another device
+
+`localhost` always means "this device", so `http://localhost:8501` will not open the app on a different computer or phone.
+
+For devices connected to the same Wi-Fi network, start both services on all interfaces:
+
+```powershell
+python -m uvicorn backend.main:app --host 0.0.0.0 --port 8000
+streamlit run frontend/app.py --server.address 0.0.0.0 --server.port 8501
+```
+
+Then open the computer's LAN address from the other device, for example:
+
+```text
+http://192.168.0.103:8501
+```
+
+The LAN address can change when the computer reconnects to Wi-Fi. This address works only on the same network. For access from any location or mobile network, deploy the Docker Compose stack to a public server or place it behind a secure HTTPS tunnel and use the generated public URL.
+
 ---
 
 ## 🧪 Testing the RAG Pipeline
